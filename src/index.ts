@@ -27,12 +27,14 @@ export function openInNewTab(url: URL | string, downloadAs?: string, download: b
 }
 
 // TODO: allow ref to be an HTMLElement object
-export function openInIframe(url: URL | string, ref: string, downloadAs?: string) {
+export function openInIframe(url: URL | string, ref: HTMLIFrameElement | string, downloadAs?: string) {
   url = addDownloadOptionsToUrl(new URL(url), downloadAs)
 
   url.hash = "#zoom=47&toolbar=0&navpanes=0&view=FitH";
 
-  document.querySelector(ref).setAttribute("src", url.toString());
+  const element = typeof ref === "string" ? document.querySelector(ref) : ref;
+
+  element.setAttribute("src", url.toString());
 }
 
 function addDownloadOptionsToUrl(url: URL, name?: string, download: boolean=false) {
