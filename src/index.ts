@@ -64,6 +64,15 @@ export class Report {
   dataType: string;
 }
 
+export class ReportobelloError extends Error {
+  public status: number;
+
+  constructor(error: string, status: number) {
+    super(error);
+    this.status = status;
+  }
+}
+
 export class Reportobello {
   private apiKey: string;
   private host: URL;
@@ -89,7 +98,7 @@ export class Reportobello {
     );
 
     if (!resp.ok) {
-      throw new Error(await resp.text());
+      throw new ReportobelloError(await resp.text(), resp.status);
     }
   }
 
@@ -107,7 +116,7 @@ export class Reportobello {
     );
 
     if (!resp.ok) {
-      throw new Error(await resp.text());
+      throw new ReportobelloError(await resp.text(), resp.status);
     }
   }
 
@@ -125,7 +134,7 @@ export class Reportobello {
     );
 
     if (!resp.ok) {
-      throw new Error(await resp.text());
+      throw new ReportobelloError(await resp.text(), resp.status);
     }
 
     return await resp.json();
@@ -143,7 +152,7 @@ export class Reportobello {
     );
 
     if (!resp.ok) {
-      throw new Error(await resp.text());
+      throw new ReportobelloError(await resp.text(), resp.status);
     }
   }
 
@@ -159,7 +168,7 @@ export class Reportobello {
     );
 
     if (!resp.ok) {
-      throw new Error(await resp.text());
+      throw new ReportobelloError(await resp.text(), resp.status);
     }
 
     return await resp.json();
@@ -185,7 +194,7 @@ export class Reportobello {
     const txt = await resp.text();
 
     if (!resp.ok) {
-      throw new Error(txt);
+      throw new ReportobelloError(txt, resp.status);
     }
 
     return new URL(txt);
@@ -209,8 +218,7 @@ export class Reportobello {
     );
 
     if (!resp.ok) {
-      const txt = await resp.text();
-      throw new Error(txt);
+      throw new ReportobelloError(await resp.text(), resp.status);
     }
 
     return await resp.blob();
@@ -228,7 +236,7 @@ export class Reportobello {
     );
 
     if (!resp.ok) {
-      throw new Error(await resp.text());
+      throw new ReportobelloError(await resp.text(), resp.status);
     }
 
     const data: any[] = await resp.json();
