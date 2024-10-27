@@ -15,6 +15,11 @@ interface IRunReportOptions {
   rawTemplate?: string;
 }
 
+interface IFileUpload {
+  name: string;
+  blob: Blob;
+}
+
 // TODO: dont use "report.pdf" as a default
 export function download(url: URL | string, downloadAs: string="report.pdf") {
   openInNewTab(url, downloadAs, true);
@@ -138,6 +143,33 @@ export class Reportobello {
     }
 
     return await resp.json();
+  }
+
+  async uploadDataFiles(template: string, files: FileList | (File | IFileUpload)[]): Promise<void> {
+    const form = new FormData();
+
+    for (const file of files) {
+      if (file instanceof File) {
+        form.append(file.name, file, file.name);
+      } else {
+        form.append(file.name, file.blob, file.name);
+      }
+    }
+
+    const resp = await fetch(
+      `${this.host}api/${this.version}/template/${template}/files`,
+      {
+        method: "POST",
+        body: form,
+        headers: {
+          "Authorization": `Bearer ${this.apiKey}`,
+        },
+      }
+    );
+
+    if (!resp.ok) {
+      throw new ReportobelloError(await resp.text(), resp.status);
+    }
   }
 
   async deleteTemplate(name: string): Promise<void> {
