@@ -1,7 +1,7 @@
 {
   "name": "reportobello",
-  "version": "1.2.0",
-  "description": "API Library for Reportobello",
+  "version": "1.2.1",
+  "description": "TypeScript/JavaScript SDK for the Reportobello API",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
