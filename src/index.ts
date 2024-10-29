@@ -11,7 +11,6 @@ interface IConfig {
 }
 
 interface IRunReportOptions {
-  preview?: Boolean;
   rawTemplate?: string;
 }
 
@@ -208,7 +207,7 @@ export class Reportobello {
 
   async runReport<T>(name: string, data: T, options: IRunReportOptions = {}): Promise<URL> {
     const resp = await fetch(
-      `${this.host}api/${this.version}/template/${name}/build?justUrl${options.preview === true ? '&preview' : ''}`,
+      `${this.host}api/${this.version}/template/${name}/build?justUrl`,
       {
         method: "POST",
         body: JSON.stringify({
@@ -234,7 +233,7 @@ export class Reportobello {
 
   async runReportAsBlob<T>(name: string, data: T, options: IRunReportOptions = {}): Promise<Blob> {
     const resp = await fetch(
-      `${this.host}api/${this.version}/template/${name}/build${options.preview === true ? '?preview' : ''}`,
+      `${this.host}api/${this.version}/template/${name}/build`,
       {
         method: "POST",
         body: JSON.stringify({
