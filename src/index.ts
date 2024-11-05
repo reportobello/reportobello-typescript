@@ -12,6 +12,7 @@ interface IConfig {
 
 interface IRunReportOptions {
   rawTemplate?: string;
+  isPure?: boolean;
 }
 
 interface IFileUpload {
@@ -207,7 +208,7 @@ export class Reportobello {
 
   async runReport<T>(name: string, data: T, options: IRunReportOptions = {}): Promise<URL> {
     const resp = await fetch(
-      `${this.host}api/${this.version}/template/${name}/build?justUrl`,
+      `${this.host}api/${this.version}/template/${name}/build?justUrl${options.isPure ? '&isPure' : ''}`,
       {
         method: "POST",
         body: JSON.stringify({
@@ -233,7 +234,7 @@ export class Reportobello {
 
   async runReportAsBlob<T>(name: string, data: T, options: IRunReportOptions = {}): Promise<Blob> {
     const resp = await fetch(
-      `${this.host}api/${this.version}/template/${name}/build`,
+      `${this.host}api/${this.version}/template/${name}/build${options.isPure ? '?pure' : ''}`,
       {
         method: "POST",
         body: JSON.stringify({
